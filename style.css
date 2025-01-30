@@ -1,0 +1,257 @@
+/* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Inclus le padding et les bordures dans les dimensions des éléments */
+}
+
+/* Titre principal */
+#game-header {
+    text-align: center;
+    margin-top: 50px; /* Augmente l'espacement supérieur */
+    margin-bottom: 30px; /* Augmente l'espacement entre le titre et le formulaire */
+}
+
+h1, h2, h3 {
+    margin-top: 20px; /* Espace au-dessus */
+    margin-bottom: 20px; /* Espace en dessous */
+    line-height: 1.5; /* Ajuste l'espacement vertical entre les lignes */
+    text-align: center; /* Centre le texte (optionnel) */
+}
+#game-header h1 {
+    font-size: 36px; /* Taille de la police */
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Ombre pour le texte */
+    margin-top: 50px; /* Augmente l'espace au-dessus */
+    margin-bottom: 30px; /* Augmente l'espace en dessous */
+    text-align: center; /* Centre le titre */
+}
+
+#game-controls {
+    display: flex;
+    justify-content: center; /* Centre le bouton horizontalement */
+    align-items: center; /* Centre verticalement dans le conteneur si nécessaire */
+    position: relative; /* S'assure que le bouton reste dans son conteneur */
+    height: auto; /* Ajuste la hauteur au contenu */
+    margin-top: 20px; /* Espacement entre le bouton et le contenu au-dessus */
+    width: 100%; /* S'assure que le conteneur occupe toute la largeur disponible */
+    padding-bottom: 20px;
+}
+
+/* Plateau de jeu */
+#game-board-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto; /* Centrage horizontal par défaut */
+    height: 100vh; /* Occupe toute la hauteur de la fenêtre */
+}
+
+#game-board {
+    display: grid;
+    gap: 10px; /* Espace entre les cartes */
+    justify-content: center;
+    align-content: center; /* Centre les cartes verticalement */
+    background-color: rgba(0, 0, 0, 0.8); /* Optionnel : ajoute un fond pour le plateau */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Donne de la profondeur au plateau */
+    margin: 0 auto; /* Assure que le plateau est centré */
+}
+
+#game-board:empty {
+    display: none;
+}
+
+/* Fond du site avec une image */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('https://image.api.playstation.com/vulcan/ap/rnd/202405/2108/d976f5d6313a7174e5341d3a5e3f21559f56f86f40a71d2f.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    display: flex;
+    flex-direction: column; /* Aligne les éléments verticalement */
+    justify-content: flex-start; /* Aligne les éléments en haut */
+    align-items: center; /* Centre horizontalement */
+    height: 100vh;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    gap: 30px; /* Espace entre les éléments */
+}
+
+/* Conteneur principal */
+.container {
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Style des cartes */
+.card {
+    width: 150px;
+    height: 150px;
+    position: relative;
+    perspective: 1000px; /* Effet 3D */
+    cursor: pointer;
+}
+
+.card div {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    transition: transform 0.5s;
+}
+
+.card-back {
+    background-image: url('assets/palworld8.png'); 
+    background-size: cover; /* Ajuste l'image pour couvrir tout l'espace */
+    background-position: center; /* Centre l'image dans la carte */
+    border-radius: 15px; /* Arrondir les coins pour correspondre à la face avant */
+    transform: rotateY(0deg);
+}
+
+.card-front {
+    transform: rotateY(180deg);
+}
+
+.card.flipped .card-back {
+    transform: rotateY(180deg);
+}
+
+.card.flipped .card-front {
+    transform: rotateY(0deg);
+}
+
+.card-front img {
+    width: 100%; /* L'image prendra toute la largeur de la carte */
+    height: 100%; /* L'image prendra toute la hauteur de la carte */
+    object-fit: cover; /* Maintient les proportions de l'image tout en la remplissant */
+    border-radius: 15px; /* Arrondir légèrement les coins des images */
+}
+
+/* Style du Message de victoire */
+
+#victory-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.9); /* Fond légèrement plus foncé */
+    color: #fff;
+    padding: 40px 60px; /* Augmente l'espace intérieur */
+    border-radius: 15px; /* Coins arrondis plus grands */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6); /* Augmente l'ombre pour un effet de profondeur */
+    text-align: center;
+    z-index: 1000;
+    display: none; /* Masqué par défaut */
+    font-size: 24px; /* Taille de texte globale plus grande */
+}
+
+#victory-message p {
+    margin: 0 0 20px; /* Augmente l'espacement sous le texte */
+    font-size: 28px; /* Taille du texte du message plus grande */
+    font-weight: bold; /* Rendre le texte plus visible */
+}
+
+#victory-message button {
+    padding: 15px 30px; /* Augmente la taille du bouton */
+    font-size: 18px; /* Taille du texte du bouton plus grande */
+    background-color: #ffcc00;
+    color: #000;
+    border: none;
+    border-radius: 10px; /* Arrondis du bouton plus grands */
+    cursor: pointer;
+}
+
+#victory-message button:hover {
+    background-color: #ffaa00;
+}
+
+/* Style du formulaire de démarrage */
+
+#game-setup {
+    position: fixed;
+    top: 50%; /* Centre verticalement */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.9);
+    color: #fff;
+    padding: 20px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    text-align: center;
+}
+
+#game-setup p {
+    margin: 0 0 10px;
+    font-size: 30px;
+}
+
+#game-setup .size-buttons {
+    display: flex;
+    gap: 10px; /* Espacement entre les boutons */
+    justify-content: center; /* Centre horizontalement les boutons */
+    margin-bottom: 10px; /* Espacement sous les boutons */
+}
+
+#game-setup .size-buttons button {
+    padding: 10px 20px;
+    font-size: 24px;
+    background-color: #ffcc00;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#game-setup .size-buttons button.active {
+    background-color: red; /* Fond rouge pour le bouton actif */
+    color: #000; 
+    border: 2px solid darkred; /* Bordure pour plus de visibilité */
+}
+
+.hidden {
+    display: none;
+}
+
+#game-setup .start-button {
+    margin-top: 10px;
+    padding: 10px 30px;
+    font-size: 30px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#game-setup .start-button:hover {
+    background-color: #218838;
+}
+
+/* Formulaire redémarrer une partie */
+
+#restart {
+    padding: 15px 30px; /* Taille du bouton */
+    font-size: 18px; /* Taille du texte */
+    background-color: #ffcc00;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    display: none; /* Cache le bouton au démarrage */
+}
+
+#restart:hover {
+    background-color: #ffaa00; /* Couleur au survol */
+    transform: scale(1.1); /* Effet d'agrandissement */
+    transform-origin: center; /* Garde le bouton centré pendant l'agrandissement */
+}
+

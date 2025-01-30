@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Game: Palworld</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="game-header">
+        <h1>Memory Palworld by ToTo</h1>
+        <h2>Bienvenue sur mon jeu de memory !</h2>
+        <div id="game-controls">
+            <button id="restart">Réinitialiser la grille</button>
+        </div>
+        <div id="game-board"></div>   
+    </div>
+    <!-- Formulaire de choix de la taille du plateau de jeu -->
+    <div id="game-setup">
+        <p>Choisissez la taille de la grille :</p>
+        <div class="size-buttons">
+            <button data-size="2">2x2</button>
+            <button data-size="4">4x4</button>
+            <button data-size="6">6x6</button>
+            <button data-size="8">8x8</button>
+            <button data-size="10">10x10</button>
+        </div>
+        <button class="start-button">Commencer le jeu</button>
+    </div>
+    <!-- Plateau de jeu -->
+    <div id="game-board-container" class="hidden">
+        <div id="game-board"></div>
+    </div>
+
+    <!-- Pop-up du message de victoire -->
+    <div id="victory-message" class="hidden">
+        <p>Félicitations ! Vous avez gagné !</p>
+        <button id="play-again">Rejouer</button>
+    </div>
+
+    
+    <script src="script.js"></script>
+</body>
+
+</html>
