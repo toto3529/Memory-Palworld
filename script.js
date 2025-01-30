@@ -60,12 +60,15 @@ async function initializeGame(gridSize) {
     if (gridSize === 2) {
         gameBoard.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`; // Colonnes dynamiques
         gameBoard.style.maxWidth = '350px'; // Limite la largeur totale à 350px
-        gameBoard.innerHTML = '';
-        } else {
-            gameBoard.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`; // Colonnes dynamiques pour les autres tailles
-            gameBoard.style.maxWidth = 'unset'; // Supprime toute limite pour les autres grilles
-            gameBoard.innerHTML = '';
+        document.body.classList.add('two-by-two'); // Ajoute la classe pour les boutons verticaux
+    } else {
+        gameBoard.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`; // Colonnes dynamiques pour les autres tailles
+        gameBoard.style.maxWidth = 'unset'; // Supprime toute limite pour les autres grilles
+        document.body.classList.remove('two-by-two'); // Retire la classe pour revenir à un affichage horizontal
     }
+
+    gameBoard.innerHTML = ''; // Vide la grille avant de la remplir
+
 
     // Crée les cartes sur le plateau
     cards.forEach((card, index) => {
@@ -82,8 +85,9 @@ async function initializeGame(gridSize) {
         gameBoard.appendChild(cardElement);
     });
 
-    // Affiche le bouton "Restart" lorsque le jeu commence
+   // Affiche les boutons "Réinitialiser la grille" et "Changer la taille"
     document.getElementById('restart').style.display = 'block';
+    document.getElementById('change-size').style.display = 'block';
 
     // Réinitialise les variables et événements
     flippedCards = [];
@@ -180,3 +184,18 @@ function restartGame() {
 
 // Gestion du bouton "Restart"
 document.getElementById('restart').addEventListener('click', restartGame);
+
+// Gestion du bouton "Changer la taille"
+document.getElementById('change-size').addEventListener('click', () => {
+    // Masque le plateau de jeu et les boutons
+    document.getElementById('game-board-container').classList.add('hidden'); // Cache le plateau
+    document.getElementById('restart').style.display = 'none';
+    document.getElementById('change-size').style.display = 'none';
+
+    // Vider le plateau de jeu pour éviter qu'il reste visible
+    const gameBoard = document.getElementById('game-board');
+    gameBoard.innerHTML = ''; // Vide la grille
+
+    // Affiche le formulaire de choix de la taille de la grille
+    document.getElementById('game-setup').classList.remove('hidden');
+});

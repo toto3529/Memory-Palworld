@@ -1,4 +1,5 @@
 /* Reset CSS */
+
 * {
     margin: 0;
     padding: 0;
@@ -6,6 +7,7 @@
 }
 
 /* Titre principal */
+
 #game-header {
     text-align: center;
     margin-top: 50px; /* Augmente l'espacement supérieur */
@@ -36,9 +38,19 @@ h1, h2, h3 {
     margin-top: 20px; /* Espacement entre le bouton et le contenu au-dessus */
     width: 100%; /* S'assure que le conteneur occupe toute la largeur disponible */
     padding-bottom: 20px;
+    gap: 20px; /* Espacement horizontal entre les boutons */
+}
+
+.two-by-two #game-controls {
+    display: flex;
+    flex-direction: column; /* Empile les boutons verticalement */
+    gap: 10px; /* Espacement vertical entre les boutons */
+    align-items: center; /* Centre les boutons horizontalement */
+    justify-content: center;
 }
 
 /* Plateau de jeu */
+
 #game-board-container {
     display: flex;
     justify-content: center;
@@ -64,6 +76,7 @@ h1, h2, h3 {
 }
 
 /* Fond du site avec une image */
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -83,6 +96,7 @@ body {
 }
 
 /* Conteneur principal */
+
 .container {
     text-align: center;
     background-color: rgba(0, 0, 0, 0.8);
@@ -92,6 +106,7 @@ body {
 }
 
 /* Style des cartes */
+
 .card {
     width: 150px;
     height: 150px;
@@ -235,7 +250,7 @@ body {
     background-color: #218838;
 }
 
-/* Formulaire redémarrer une partie */
+/* Style du Bouton réinitialiser la grille en jeu */
 
 #restart {
     padding: 15px 30px; /* Taille du bouton */
@@ -255,3 +270,42 @@ body {
     transform-origin: center; /* Garde le bouton centré pendant l'agrandissement */
 }
 
+/* Style du Bouton changer la taille de la grille en jeu */
+
+#change-size {
+    padding: 15px 30px;
+    font-size: 18px;
+    background-color: #ffcc00;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    display: none; /* Cache le bouton au démarrage */
+}
+
+#change-size:hover {
+    background-color: #ffaa00; /* Couleur au survol */
+    transform: scale(1.1); /* Effet d'agrandissement */
+    transform-origin: center; /* Garde le bouton centré pendant l'agrandissement */
+}
+
+#change-size.hidden {
+    display: none;
+}
+
+/* Style des boutons */
+#restart, #change-size {
+    padding: 15px 30px;
+    font-size: 18px;
+    text-align: center;
+    background-color: #ffcc00;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#restart:hover, #change-size:hover {
+    background-color: #ffaa00;
+}
