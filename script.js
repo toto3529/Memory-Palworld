@@ -4,6 +4,8 @@ const gameBoard = document.getElementById('game-board');
 // Masquer le plateau de jeu au démarrage
 gameBoardContainer.classList.add('hidden');
 let selectedGridSize = 4; // Par défaut, une grille 4x4
+let timer;
+let timeElapsedMs = 0; // Temps en millisecondes
 
 // Charger dynamiquement la liste des fichiers d'un JSON
 async function fetchImages() {
@@ -30,8 +32,6 @@ document.querySelectorAll('.size-buttons button').forEach(button => {
 
         // Ajouter la classe 'active' au bouton cliqué
         button.classList.add('active');
-console.log(`${button.textContent} est maintenant actif`);
-
 
         // Mettre à jour la taille de la grille sélectionnée
         selectedGridSize = parseInt(button.getAttribute('data-size'), 10);
@@ -44,7 +44,9 @@ console.log(`${button.textContent} est maintenant actif`);
 document.querySelector('.start-button').addEventListener('click', () => {
     document.getElementById('game-setup').classList.add('hidden'); // Cache le formulaire
     document.getElementById('game-board-container').classList.remove('hidden'); // Affiche le plateau
+    document.getElementById('game-setup').classList.add('hidden'); // Affiche le chronomètre
     initializeGame(selectedGridSize); // Démarre le jeu avec la taille sélectionnée
+    document.getElementById('timer-container').classList.remove('hidden'); // Affiche le chronomètre
     document.getElementById('restart').style.display = 'block'; // Affiche le bouton "Restart"
 });
 
@@ -55,6 +57,7 @@ async function initializeGame(gridSize) {
     const pals = getRandomImages(allImages, totalCards / 2); // Sélectionne la moitié des cartes nécessaires
     let cards = [...pals, ...pals]; // Duplique pour former les paires
     cards = shuffle(cards); // Mélange les cartes
+    startTimer();
 
     // Configure la grille dynamiquement
     if (gridSize === 2) {
@@ -70,7 +73,7 @@ async function initializeGame(gridSize) {
     gameBoard.innerHTML = ''; // Vide la grille avant de la remplir
 
 
-    // Crée les cartes sur le plateau
+    // Créer les cartes sur le plateau
     cards.forEach((card, index) => {
         const cardElement = document.createElement('div');
         cardElement.classList.add('card');
@@ -107,7 +110,22 @@ function shuffle(array) {
     return array;
 }
 
-// // Variables pour le suivi des cartes sélectionnées
+// Fonction pour démarrer le chronomètre
+function startTimer() {
+    timeElapsedMs = 0; // Réinitialise le temps
+    document.getElementById('timer').textContent = `Temps : 0.0s`;
+    
+    timer = setInterval(() => {
+        timeElapsedMs += 10; // Ajoute 10 ms à chaque intervalle
+
+        const seconds = (timeElapsedMs / 1000).toFixed(1); // Calcule les secondes avec 1 décimale
+
+        // Met à jour l’affichage
+        document.getElementById('timer').textContent = `Temps : ${seconds}s`;
+    }, 10); // Intervalle de 10 ms
+}
+
+// Fonction de retouner les cartes
 // let flippedCards = [];
 // let lockBoard = false; // Empêche de cliquer sur d'autres cartes pendant une comparaison
 
@@ -154,6 +172,7 @@ function checkForWin() {
     const allFlipped = document.querySelectorAll('.card.flipped');
     if (allFlipped.length === document.querySelectorAll('.card').length) {
         setTimeout(() => {
+            stopTimer(); // Arrête le chronomètre
             showVictoryMessage(); // Affiche le message de victoire
         }, 500);;
     }
@@ -161,15 +180,25 @@ function checkForWin() {
 
 // Fonction pour afficher le message de victoire
 function showVictoryMessage() {
+    const seconds = Math.floor(timeElapsedMs / 1000);
+    const milliseconds = timeElapsedMs % 1000;
     const victoryMessage = document.getElementById('victory-message');
+    victoryMessage.innerHTML = `
+        <p>Félicitations ! Vous avez gagné en ${seconds}s ${milliseconds.toString().padStart(3, '0')}ms.</p>
+        <button id="play-again">Rejouer</button>
+    `;
     victoryMessage.style.display = 'block';
 
     // Ajouter un événement pour rejouer
     document.getElementById('play-again').addEventListener('click', () => {
-        victoryMessage.style.display = 'none'; // Cache le message
+        document.getElementById('victory-message').style.display = 'none'; // Cache le message
         document.getElementById('game-board-container').classList.add('hidden'); // Cache le plateau
         document.getElementById('game-setup').classList.remove('hidden'); // Affiche le formulaire de sélection
         document.getElementById('restart').style.display = 'none'; // Cache le bouton "Restart"
+        document.getElementById('change-size').style.display = 'none'; // Cache le bouton "Changer la taille"
+        document.getElementById('timer').style.display = 'none';
+        document.getElementById('timer-container').classList.add('hidden'); // Cache le chronomètre au retour au menu
+        stopTimer(); // Stop timer
 
         // Vider le plateau de jeu pour éviter qu'il reste visible
         const gameBoard = document.getElementById('game-board');
@@ -179,6 +208,9 @@ function showVictoryMessage() {
 
 // Fonction pour redémarrer le jeu
 function restartGame() {
+    stopTimer(); // Arrête le chronomètre actuel
+    timeElapsedMs = 0; // Réinitialise le compteur de temps
+    document.getElementById('timer').textContent = `Temps : 0.0s`; // Réinitialise l'affichage
     initializeGame(selectedGridSize); // Réinitialise le jeu avec de nouvelles images
 }
 
@@ -187,15 +219,27 @@ document.getElementById('restart').addEventListener('click', restartGame);
 
 // Gestion du bouton "Changer la taille"
 document.getElementById('change-size').addEventListener('click', () => {
+    stopTimer(); // Arrête le chronomètre
+    timeElapsedMs = 0; // Remet à zéro le temps
+    document.getElementById('timer').textContent = `Temps : 0.0s`; // Réinitialise l'affichage
+    document.getElementById('timer-container').classList.add('hidden'); // Cache le chronomètre
+
     // Masque le plateau de jeu et les boutons
     document.getElementById('game-board-container').classList.add('hidden'); // Cache le plateau
     document.getElementById('restart').style.display = 'none';
     document.getElementById('change-size').style.display = 'none';
 
     // Vider le plateau de jeu pour éviter qu'il reste visible
-    const gameBoard = document.getElementById('game-board');
     gameBoard.innerHTML = ''; // Vide la grille
 
     // Affiche le formulaire de choix de la taille de la grille
     document.getElementById('game-setup').classList.remove('hidden');
 });
+
+// Fonction pour arrêter le chronomètre
+function stopTimer() {
+    if (timer) {
+        clearInterval(timer); // Stoppe l’intervalle actif
+        timer = null; // Réinitialise la variable pour éviter tout conflit
+    }
+}
